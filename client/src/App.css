@@ -24,3 +24,15 @@ body {
   padding: 1em;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
+
+.container {
+  --max-width: 1000px;
+  --padding: 1rem;
+
+  width: min(var(--max-width), 100% - var(--padding) * 2);
+  margin-inline: auto;
+  text-align: center;
+}
+.nav-item {
+  padding: 1em;
+}
