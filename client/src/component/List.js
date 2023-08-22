@@ -23,6 +23,7 @@ function List(props) {
           </div>
         );
       })}
+      <button>전송</button>
     </div>
   );
 }
