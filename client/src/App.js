@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Upload from "./component/Upload";
+import Upload from "./component/post/Upload";
 import Heading from "./component/Heading";
-import List from "./component/List";
+import List from "./component/post/List";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 function App() {
@@ -11,15 +11,15 @@ function App() {
       <Heading />
       <Routes>
         <Route
-          path="/upload"
+          path="/"
           element={
-            <Upload contentList={contentList} setContentList={setContentList} />
+            <List contentList={contentList} setContentList={setContentList} />
           }
         />
         <Route
-          path="/list"
+          path="/upload"
           element={
-            <List contentList={contentList} setContentList={setContentList} />
+            <Upload contentList={contentList} setContentList={setContentList} />
           }
         />
       </Routes>

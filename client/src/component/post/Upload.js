@@ -1,16 +1,25 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 function Upload(props) {
   const [Content, setContent] = useState("");
   const [Title, setTitle] = useState("");
+  const navigate = useNavigate();
   const onSubmit = (e) => {
     e.preventDefault();
-
+    if (Title === "" || Content === "") {
+      console.log("모든 항목을 채워주세요");
+    }
     let body = { title: Title, content: Content };
     axios
       .post("/api/post", body)
       .then((response) => {
-        console.log(response, "성공");
+        if (response.data) {
+          alert("글작성이 성공하였습니다");
+          navigate("/");
+        } else {
+          alert("글작성이 실패하였습니다");
+        }
       })
       .catch((err) => {
         console.log(err);
