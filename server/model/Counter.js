@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const CounterSchema = new Schema(
   {
     name: String,
-    postNum: Number,
+    postNum: { type: Number },
   },
   { collection: "Counter" }
 );
