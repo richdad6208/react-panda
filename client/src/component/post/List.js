@@ -20,12 +20,12 @@ function List(props) {
       {posts
         .map((item, idx) => {
           return (
-            <Link key={idx} to={item.postNum}>
-              <div className="board-wrapper">
+            <div className="board-wrapper">
+              <Link key={idx} to={item.postNum}>
                 <span className="board__title">제목: {item.title}</span>
                 <span className="board__content">내용: {item.content}</span>
-              </div>
-            </Link>
+              </Link>
+            </div>
           );
         })
         .reverse()}
