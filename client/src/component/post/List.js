@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-function List(props) {
+function List() {
   const [posts, setPosts] = useState([]);
   useEffect(() => {
     axios
@@ -16,20 +16,20 @@ function List(props) {
       });
   }, []);
   return (
-    <div className="container">
+    <>
       {posts
         .map((item, idx) => {
           return (
-            <div className="board-wrapper">
-              <Link key={idx} to={item.postNum}>
-                <span className="board__title">제목: {item.title}</span>
-                <span className="board__content">내용: {item.content}</span>
+            <div className="board-wrapper" key={idx}>
+              <Link to={`/post/${item.postNum}`}>
+                <p className="board__title">제목: {item.title}</p>
+                <p className="board__content">내용: {item.content}</p>
               </Link>
             </div>
           );
         })
         .reverse()}
-    </div>
+    </>
   );
 }
 

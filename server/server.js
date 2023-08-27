@@ -22,15 +22,13 @@ app.post("/api/post", async (req, res) => {
   const { title, content, postNum } = req.body;
   try {
     const counter = await Counter.findOne({ name: "counter" });
-    const post = await Post.create({
+    await Post.create({
       title,
       content,
       postNum: counter.postNum,
     });
-    console.log(post);
     counter.$inc("postNum", 1);
     await counter.save();
-    console.log(counter);
     res.status(200).json({
       success: true,
     });
@@ -44,7 +42,6 @@ app.post("/api/post", async (req, res) => {
 app.post("/api/post/list", async (req, res) => {
   try {
     const posts = await Post.find({});
-    console.log(posts);
     res.status(200).json({
       success: true,
       posts,
@@ -56,4 +53,14 @@ app.post("/api/post/list", async (req, res) => {
   }
 });
 
-app.get("/api/post/:id", async (req, res) => {});
+app.post("/api/post/detail", async (req, res) => {
+  try {
+    const { postNum } = req.body;
+    const post = await Post.findOne({ postNum });
+    console.log(post);
+    res.status(200).json({ success: true, data: post });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ success: false });
+  }
+});
