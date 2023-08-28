@@ -66,3 +66,22 @@ app.post("/api/post/detail", async (req, res) => {
     res.status(400).json({ success: false });
   }
 });
+
+app.post("/api/editBefore", async (req, res) => {
+  try {
+    const { postNum } = req.body;
+    const post = await Post.findOne({ postNum });
+    if (post) {
+      res.status(200).json({ success: true, post });
+    } else {
+      res.status(400).json({ success: false });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.post("/api/editAfter", async (req, res) => {
+  const { title, content, postNum } = req.body;
+  await Post.updateOne;
+});
