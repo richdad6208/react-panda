@@ -6,6 +6,7 @@ import Spinner from "react-bootstrap/Spinner";
 function List() {
   const [posts, setPosts] = useState([]);
   const [flag, setFlag] = useState(false);
+
   useEffect(() => {
     axios
       .post("/api/post/list")

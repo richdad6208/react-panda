@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Spinner from "react-bootstrap/Spinner";
 
@@ -36,9 +36,25 @@ const Button = styled.button`
 
 function Detail() {
   const params = useParams();
+  const navigate = useNavigate();
   const body = params;
   const [postDetail, setPostDetail] = useState({});
   const [flag, setFlag] = useState(false);
+  function deleteItem() {
+    if (window.confirm("글을 삭제하시겠습니까?")) {
+      axios
+        .post("/api/post/delete", body)
+        .then((response) => {
+          if (response.data.success) {
+            alert("글 삭제가 성공하였습니다");
+            navigate("/");
+          } else {
+            alert("글 삭제가 실패하였습니다");
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  }
   useEffect(() => {
     axios
       .post("/api/post/detail", body)
@@ -61,10 +77,12 @@ function Detail() {
           <p>내용: {postDetail.content}</p>
           <div>
             <Link to={`/edit/${postDetail.postNum}`}>
-              <Button $bgColor="crimson">수정</Button>
+              <Button $bgColor="dodgerblue">수정</Button>
             </Link>
             <Link to="/">
-              <Button $bgColor="dodgerblue">닫기</Button>
+              <Button $bgColor="crimson" onClick={deleteItem}>
+                삭제
+              </Button>
             </Link>
           </div>
         </DeatailWrapper>

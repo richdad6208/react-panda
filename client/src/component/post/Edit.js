@@ -9,7 +9,7 @@ function Edit(props) {
   useEffect(() => {
     const body = { postNum };
     axios
-      .post("/api/editBefore", body)
+      .post("/api/post/editBefore", body)
       .then((response) => {
         if (response.data.success) {
           setTitle(response.data.post.title);
@@ -28,7 +28,7 @@ function Edit(props) {
     }
     let body = { title: Title, content: Content, postNum };
     axios
-      .post("/api/editAfter", body)
+      .post("/api/post/editAfter", body)
       .then((response) => {
         if (response.data) {
           alert("글 수정이 성공하였습니다");

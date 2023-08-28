@@ -1,5 +1,5 @@
 @import "font";
-:root  {
+:root {
   --fw-bold: 700;
   --fw-regular: 400;
   --fw-light: 300;
@@ -15,6 +15,10 @@ body {
   font-family: "Pretendard-Regular", sans-serif;
   font-weight: var(--fw-regular);
   line-height: 1;
+}
+a {
+  color: inherit;
+  text-decoration: inherit;
 }
 input {
   padding: 0.4em;
