@@ -34,7 +34,7 @@ const Button = styled.button`
   padding: 0.5em 0.7em;
 `;
 
-function Detail() {
+function Edit() {
   const params = useParams();
   const body = params;
   const [postDetail, setPostDetail] = useState({});
@@ -60,10 +60,8 @@ function Detail() {
           <hr />
           <p>내용: {postDetail.content}</p>
           <div>
-            <Button as="a" $bgColor="crimson">
-              수정
-            </Button>
-            <Button $bgColor="dodgerblue">닫기</Button>
+            <Button $bgColor="crimson">확인</Button>
+            <Button $bgColor="dodgerblue">취소</Button>
           </div>
         </DeatailWrapper>
       ) : (
@@ -73,4 +71,4 @@ function Detail() {
   );
 }
 
-export default Detail;
+export default Edit;

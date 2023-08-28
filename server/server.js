@@ -57,8 +57,10 @@ app.post("/api/post/detail", async (req, res) => {
   try {
     const { postNum } = req.body;
     const post = await Post.findOne({ postNum });
-    console.log(post);
-    res.status(200).json({ success: true, data: post });
+    res.status(200).json({
+      success: true,
+      post,
+    });
   } catch (err) {
     console.log(err);
     res.status(400).json({ success: false });
