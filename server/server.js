@@ -82,6 +82,15 @@ app.post("/api/editBefore", async (req, res) => {
 });
 
 app.post("/api/editAfter", async (req, res) => {
-  const { title, content, postNum } = req.body;
-  await Post.updateOne;
+  try {
+    const { title, content, postNum } = req.body;
+    const newPost = await Post.updateOne({ postNum }, { title, content });
+    if (!newPost) {
+      res.status(404).json({ success: false });
+    } else {
+      res.status(200).json({ success: true });
+    }
+  } catch (err) {
+    console.log(err);
+  }
 });

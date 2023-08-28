@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import styled from "styled-components";
 import Spinner from "react-bootstrap/Spinner";
 
@@ -60,10 +60,12 @@ function Detail() {
           <hr />
           <p>내용: {postDetail.content}</p>
           <div>
-            <Button as="a" $bgColor="crimson">
-              수정
-            </Button>
-            <Button $bgColor="dodgerblue">닫기</Button>
+            <Link to={`/edit/${postDetail.postNum}`}>
+              <Button $bgColor="crimson">수정</Button>
+            </Link>
+            <Link to="/">
+              <Button $bgColor="dodgerblue">닫기</Button>
+            </Link>
           </div>
         </DeatailWrapper>
       ) : (
