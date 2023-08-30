@@ -9,6 +9,7 @@ app.listen(PORT, () => {
   console.log(`SERVER🟢 IN ${PORT}`);
 });
 app.use(express.static(path.join(__dirname, "../client/build")));
+app.use("/uploads", express.static(path.join(__dirname, "./uploads")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.get("/", (req, res) => {

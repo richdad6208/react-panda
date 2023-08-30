@@ -6,6 +6,7 @@ const postSchema = new Schema(
     title: { type: String, require },
     content: { type: String, require },
     postNum: Number,
+    filePath: String,
   },
   { collection: "Post" }
 );
