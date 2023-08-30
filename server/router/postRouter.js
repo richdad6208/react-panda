@@ -3,6 +3,21 @@ const postRouter = express.Router();
 import Post from "../model/Post";
 import Counter from "../model/Counter";
 import multer from "multer";
+import { S3Client } from "@aws-sdk/client-s3";
+import multerS3 from "multer-s3";
+
+const region = "Asia Pacific (Seoul) ap-northeast-2";
+const access_key = "ACCESS_KEY";
+const secret_key = "SECRET_KEY";
+
+const S3 = new AWS.S3({
+  endpoint,
+  region,
+  credentials: {
+    accessKeyId: access_key,
+    secretAccessKey: secret_key,
+  },
+});
 
 postRouter.post("", async (req, res) => {
   const { title, content, filePath, postNum } = req.body;
@@ -105,11 +120,20 @@ const storage = multer.diskStorage({
     cb(null, "uploads/images");
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + "-" + Date.now());
+    cb(null, Date.now() + "-" + file.originalname);
   },
 });
 
-const upload = multer({ storage: storage }).single("postImage");
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: "react-study-bucket",
+    acl: "public-read-write",
+    key: function (req, file, cb) {
+      cb(null, Date.now().toString());
+    },
+  }),
+}).single("postImage");
 
 postRouter.post("/imageUpload", (req, res) => {
   upload(req, res, function (err) {

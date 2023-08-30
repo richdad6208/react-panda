@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import ImageUpload from "./imageUpload";
 function Edit(props) {
   const { postNum } = useParams();
   const [Content, setContent] = useState("");
   const [Title, setTitle] = useState("");
+  const {
+    state: { beforeImage },
+  } = useLocation();
+  const [filePath, setFilePath] = useState(beforeImage);
   const navigate = useNavigate();
   useEffect(() => {
     const body = { postNum };
@@ -14,6 +19,7 @@ function Edit(props) {
         if (response.data.success) {
           setTitle(response.data.post.title);
           setContent(response.data.post.content);
+          setFilePath(response.data.post.filePath);
         } else {
           console.log("데이터가 없습니다");
         }
@@ -52,6 +58,7 @@ function Edit(props) {
             setTitle(e.target.value);
           }}
         />
+        <ImageUpload filePath={filePath} setFilePath={setFilePath} />
         <textarea
           className="form__content"
           value={Content}

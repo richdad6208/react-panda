@@ -74,9 +74,17 @@ function Detail() {
         <DeatailWrapper>
           <h4>제목: {postDetail.title}</h4>
           <hr />
+          <img
+            src={`http://localhost:4000/${postDetail.filePath}`}
+            alt=""
+            style={{ width: "100%" }}
+          />
           <p>내용: {postDetail.content}</p>
           <div>
-            <Link to={`/edit/${postDetail.postNum}`}>
+            <Link
+              to={`/edit/${postDetail.postNum}`}
+              state={{ beforeImage: postDetail.filePath }}
+            >
               <Button $bgColor="dodgerblue">수정</Button>
             </Link>
             <Link to="/">
