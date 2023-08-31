@@ -1,23 +1,30 @@
 import express from "express";
-const postRouter = express.Router();
 import Post from "../model/Post";
 import Counter from "../model/Counter";
 import multer from "multer";
 import { S3Client } from "@aws-sdk/client-s3";
 import multerS3 from "multer-s3";
 
-const region = "Asia Pacific (Seoul) ap-northeast-2";
-const access_key = "ACCESS_KEY";
-const secret_key = "SECRET_KEY";
-
-const S3 = new AWS.S3({
-  endpoint,
-  region,
+const s3 = new S3Client({
+  region: "Asia Pacific (Seoul) ap-northeast-2",
   credentials: {
-    accessKeyId: access_key,
-    secretAccessKey: secret_key,
+    accessKeyId: process.env.ACCESS_KEY,
+    secretAccessKey: process.env.SECRET_KEY,
   },
 });
+
+const upload = multer({
+  dest: "uploads/images",
+  storage: multerS3({
+    s3: s3,
+    bucket: "react-study-bucket",
+    key: function (req, file, cb) {
+      cb(null, Date.now().toString());
+    },
+  }),
+});
+
+const postRouter = express.Router();
 
 postRouter.post("", async (req, res) => {
   const { title, content, filePath, postNum } = req.body;
@@ -115,33 +122,8 @@ postRouter.post("/delete", async (req, res) => {
   }
 });
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/images");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
-  },
-});
-
-const upload = multer({
-  storage: multerS3({
-    s3: s3,
-    bucket: "react-study-bucket",
-    acl: "public-read-write",
-    key: function (req, file, cb) {
-      cb(null, Date.now().toString());
-    },
-  }),
-}).single("postImage");
-
-postRouter.post("/imageUpload", (req, res) => {
-  upload(req, res, function (err) {
-    if (err) {
-      res.status(400).json({ success: false });
-    }
-    res.status(200).json({ success: true, filePath: res.req.file.path });
-  });
+postRouter.post("/imageUpload", upload.single("postImage"), (req, res) => {
+  console.log(req.file);
 });
 
 export default postRouter;
