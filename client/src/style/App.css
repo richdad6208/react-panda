@@ -4,12 +4,10 @@
   --fw-regular: 400;
   --fw-light: 300;
 }
-
 html,
 body {
   height: 100%;
 }
-
 /* general-styling */
 body {
   font-family: "Pretendard-Regular", sans-serif;

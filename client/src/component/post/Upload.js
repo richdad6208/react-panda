@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import ImageUpload from "./imageUpload";
 function Upload(props) {
   const [Content, setContent] = useState("");
   const [Title, setTitle] = useState("");
@@ -12,7 +11,21 @@ function Upload(props) {
     if (Title === "" || Content === "") {
       console.log("모든 항목을 채워주세요");
     }
+
+    const inputFile = document.querySelector("#imageUpload").files[0];
+    const formData = new FormData();
+    console.log(inputFile);
+    formData.append("postImage", inputFile);
+    axios
+      .post("/api/post/imageUpload", formData)
+      .then((response) => {
+        if (response.data.success) {
+          setFilePath(response.data.filePath);
+        }
+      })
+      .catch((err) => console.log(err));
     let body = { title: Title, content: Content, filePath };
+
     axios
       .post("/api/post", body)
       .then((response) => {
@@ -27,9 +40,14 @@ function Upload(props) {
         console.log(err);
       });
   };
+
   return (
     <div className="container py-4">
-      <div className="form-wrapper">
+      <form
+        className="form-wrapper"
+        method="post"
+        encType="multipart/form-data"
+      >
         <input
           className="form__title"
           type="text"
@@ -38,7 +56,8 @@ function Upload(props) {
             setTitle(e.target.value);
           }}
         />
-        <ImageUpload setFilePath={setFilePath} />
+        <label htmlFor="imageUpload">사진 업로드</label>
+        <input id="imageUpload" name="postImage" type="file" accept="image/*" />
         <textarea
           className="form__content"
           value={Content}
@@ -46,10 +65,10 @@ function Upload(props) {
             setContent(e.target.value);
           }}
         ></textarea>
-        <button className="form__button" onClick={onSubmit}>
+        <button type="submit" className="form__button" onClick={onSubmit}>
           완료
         </button>
-      </div>
+      </form>
     </div>
   );
 }

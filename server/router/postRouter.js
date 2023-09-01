@@ -1,28 +1,7 @@
 import express from "express";
 import Post from "../model/Post";
 import Counter from "../model/Counter";
-import multer from "multer";
-import { S3Client } from "@aws-sdk/client-s3";
-import multerS3 from "multer-s3";
-
-const s3 = new S3Client({
-  region: "Asia Pacific (Seoul) ap-northeast-2",
-  credentials: {
-    accessKeyId: process.env.ACCESS_KEY,
-    secretAccessKey: process.env.SECRET_KEY,
-  },
-});
-
-const upload = multer({
-  dest: "uploads/images",
-  storage: multerS3({
-    s3: s3,
-    bucket: "react-study-bucket",
-    key: function (req, file, cb) {
-      cb(null, Date.now().toString());
-    },
-  }),
-});
+import { upload } from "../middleware";
 
 const postRouter = express.Router();
 
@@ -124,6 +103,11 @@ postRouter.post("/delete", async (req, res) => {
 
 postRouter.post("/imageUpload", upload.single("postImage"), (req, res) => {
   console.log(req.file);
+  if (req.file) {
+    res.status(200).json({ success: true, filePath: req.file.location });
+  } else {
+    res.status(400).json({ success: false });
+  }
 });
 
 export default postRouter;
