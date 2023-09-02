@@ -68,17 +68,14 @@ function Detail() {
       })
       .catch((err) => console.log(err));
   }, [body]);
+  console.log(postDetail);
   return (
     <>
       {flag ? (
         <DeatailWrapper>
           <h4>제목: {postDetail.title}</h4>
           <hr />
-          <img
-            src={`http://localhost:4000/${postDetail.filePath}`}
-            alt=""
-            style={{ width: "100%" }}
-          />
+          <img src={postDetail.filePath} alt="" style={{ width: "100%" }} />
           <p>내용: {postDetail.content}</p>
           <div>
             <Link

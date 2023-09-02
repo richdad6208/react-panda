@@ -7,14 +7,16 @@ const postRouter = express.Router();
 
 postRouter.post("", async (req, res) => {
   const { title, content, filePath, postNum } = req.body;
+  console.log("filePath", filePath);
   try {
     const counter = await Counter.findOne({ name: "counter" });
-    await Post.create({
+    const post = await Post.create({
       title,
       content,
       postNum: counter.postNum,
       filePath,
     });
+    console.log(post);
     counter.$inc("postNum", 1);
     await counter.save();
     res.status(200).json({
@@ -102,7 +104,7 @@ postRouter.post("/delete", async (req, res) => {
 });
 
 postRouter.post("/imageUpload", upload.single("postImage"), (req, res) => {
-  console.log(req.file);
+  console.log(req.file.location);
   if (req.file) {
     res.status(200).json({ success: true, filePath: req.file.location });
   } else {

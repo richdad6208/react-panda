@@ -14,31 +14,34 @@ function Upload(props) {
 
     const inputFile = document.querySelector("#imageUpload").files[0];
     const formData = new FormData();
-    console.log(inputFile);
     formData.append("postImage", inputFile);
     axios
       .post("/api/post/imageUpload", formData)
       .then((response) => {
         if (response.data.success) {
           setFilePath(response.data.filePath);
+          let body = {
+            title: Title,
+            content: Content,
+            filePath: response.data.filePath,
+          };
+          console.log(body);
+          axios
+            .post("/api/post", body)
+            .then((response) => {
+              if (response.data) {
+                alert("글작성이 성공하였습니다");
+                navigate("/");
+              } else {
+                alert("글작성이 실패하였습니다");
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         }
       })
       .catch((err) => console.log(err));
-    let body = { title: Title, content: Content, filePath };
-
-    axios
-      .post("/api/post", body)
-      .then((response) => {
-        if (response.data) {
-          alert("글작성이 성공하였습니다");
-          navigate("/");
-        } else {
-          alert("글작성이 실패하였습니다");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   };
 
   return (
