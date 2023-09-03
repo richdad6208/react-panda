@@ -11,6 +11,7 @@ function Upload(props) {
     if (Title === "" || Content === "") {
       console.log("모든 항목을 채워주세요");
     }
+    console.log("");
 
     const inputFile = document.querySelector("#imageUpload").files[0];
     const formData = new FormData();
